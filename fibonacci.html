@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="title" content="Fibonacci Calculator">
+    <meta name="description" content="Cette application permet de calculer la suite de Fibonacci."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FIBONACCI CALCULATOR</title>
+
+    <style>
+        body
+        {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            color: #fff;
+        }
+        header
+        {
+            height: 250px;
+            background: url("https://cdn.images.express.co.uk/img/dynamic/109/590x/fibonacci-621378.jpg") no-repeat center;
+            background-color: #fff;
+            margin: 0;
+        }
+        h1
+        {
+            text-align: center;
+            line-height: 250px;
+            margin: 0;
+            font-size: 55px;
+            color: #fff;
+            text-shadow: 0 0 0.2em #000, 0 0 0.2em #000,
+            0 0 0.2em #000;
+        }
+        button
+        {
+            padding: 4px 10px 4px 10px;
+            border: #D0BE90 solid 2px;
+            background: linear-gradient(#f8efd3,#fcf8ea);
+            color: #333;
+            font: bold 15px/22px "Trebuchet MS", Arial, Helvetica, sans-serif;
+            margin: 20px;
+            width: 200px;
+        }
+        p
+        {
+            font-size: 18px;
+        }
+        #suiteContainer
+        {
+            border: 1px solid white;
+            width: 500px;
+            text-align: left;
+        }
+        #suite li
+        {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>FIBONACCI CALCULATOR</h1>
+    </header>
+    <center>
+        <p>Cette application permet de calculer la suite de Fibonacci en affichant 100 éléments à la fois.</p>
+        <button onclick="prevSuite();">Afficher la suite précédente</button>
+        <button onclick="nextSuite();">Afficher la suite suivante</button>
+
+        <div id="suiteContainer">
+            <ul id="suite">
+
+            </ul>
+        </div>
+    </center>
+
+    <script type="text/javascript">
+// ************ Calcul de la suite Fibonacci ************ //
+        function fibonacci(n)
+        {
+            let x;
+            if(n <= 0) return 0;
+            if(n == 1) return 1;
+            let y = 0;
+            let z = 1;
+            for(let i = 2; i <= n; i++)
+            {
+                x = y + z;
+                y = z;
+                z = x;
+            };
+            return z;
+        }
+
+// ************ Ecriture de la suite dans le DOM ************ //
+        let liste = "",
+            j = 0,
+            max = 99;
+
+        function initSuite()
+        {
+            for(j; j <= max; j++)
+            {
+                liste += '<li>F('+j+') = '+fibonacci(j)+'</li>';
+                document.querySelector('#suite').innerHTML = liste;
+            }
+            assignColor();
+        }
+    
+        function nextSuite()
+        {
+            max += 100;
+            liste = "";
+            initSuite();
+        }
+
+        function prevSuite()
+        {          
+            if (j > 100) {
+                j -= 200;
+                max -= 100;
+                liste = "";
+                initSuite();
+            }
+        }
+
+// ************ Fonction qui génère des couleurs aléatoires ************ //
+        function getRandomColor() 
+        {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) 
+            {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+// ************ On assigne une couleur à chaque ligne de la suite ************ //
+        function assignColor() 
+        {
+            let liElts = document.querySelectorAll('li');
+            let ulElt = document.querySelector('#suite');
+            for(i = 0; i < liElts.length; i++)
+            {
+                if(liElts[i] !== ulElt.firstChild && ulElt.lastChild)
+                {
+                    liElts[i].style.color = getRandomColor();
+                }
+                else if(ulElt.firstChild)
+                {
+                    ulElt.firstChild.style.color = "black";
+                }
+                else(ulElt.lastChild)
+                {
+                    ulElt.lastChild.style.color = "white";
+                }
+            }
+        }
+
+        window.onload = initSuite;
+
+    </script>
+</body>
+</html>
